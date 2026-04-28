@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "auth", description = "Endpoints de autenticação")
 @RestController
-@Tag(name = "auth")
 @RequestMapping("/v1/auth")
 public class AuthController {
 
