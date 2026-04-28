@@ -1,0 +1,10 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: db_tech_challenge
+    restart: always
+    environment:
+      MYSQL_DATABASE: rangolegal
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
