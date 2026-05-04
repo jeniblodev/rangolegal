@@ -58,8 +58,13 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Senha atual incorreta")
     })
     @PatchMapping("/{id}/password")
-    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+    public ResponseEntity<String> updatePassword(@PathVariable Long id, @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
         userService.updatePassword(id, passwordUpdateDTO);
+        return ResponseEntity.ok("Senha atualizada com sucesso");
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }
