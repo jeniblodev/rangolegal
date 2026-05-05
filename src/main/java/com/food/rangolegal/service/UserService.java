@@ -64,4 +64,11 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(passwordUpdateDTO.newPassword()));
         userRepository.save(user);
     }
+        @Transactional
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("Usuário não encontrado com o ID: " + id);
+        }
+        userRepository.deleteById(id);
+    }
 }
