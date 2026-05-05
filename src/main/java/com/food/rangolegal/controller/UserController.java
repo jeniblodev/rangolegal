@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Erro de validação ou e-mail duplicado")
     })
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<User> create(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         return ResponseEntity.status(201).body(userService.save(userRequestDTO));
     }
 
@@ -48,7 +49,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     @PatchMapping("/{id}/data")
-    public ResponseEntity<User> updateData(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<User> updateData(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO userUpdateDTO) {
         return ResponseEntity.ok(userService.updateData(id, userUpdateDTO));
     }
 
