@@ -1,61 +1,57 @@
 # RangoLegal
 
-##### Para atender a demanda do grupo de restaurantes da nossa região, vamos desenvolver um sistema único e compartilhado. Permitindo melhor interação entre os clientes e os restaurantes.
+### Descrição do problema
+O projeto tem origem na necessidade de um grupo de restaurantes da nossa região, que buscam reduzir os custos operacionais utilizando um sistema único e compartilhado. O foco é permitir que os estabelecimentos gerenciem suas operações enquanto os clientes podem consultar informações, fazer avaliações e realizar pedidos. Assim é possível garantir que a competição individual entre os restaurantes seja com base na qualidade da comida oferecida, e não pela qualidade do sistema de gestão individual.
+
+### Objetivo do projeto
+Desenvolver um backend robusto utilizando Spring Boot, Docker Compose e Maven para gerenciar usuários (Clientes e Donos de Restaurante), garantindo segurança no armazenamento de senhas, integridade de dados e uma API padronizada.
 
 ## Instrução de Instalação do projeto
-Pré-requisitos
-Antes de começar, você precisará ter instalado:
-Java 21
-JDK
-Maven
-Docker Compose
-Postman
 
-Configuração do Banco de Dados
+**Pré-requisitos**
+
+Antes de começar, você precisará ter instalado:
+* Java 21
+* JDK
+* Maven
+* Docker Compose
+* Postman
+
+**Configuração do Banco de Dados**
+
 O projeto utiliza Docker para gerenciar o banco de dados.
 
-Navegue até a raiz do projeto.
-Execute o comando para subir o container do banco:
-Bash
-docker-compose up -d
+* Navegue até a raiz do projeto.
+* Execute o comando para subir o container do banco: `docker-compose up -d`
 
-Clone o repositório:
-Bash
-git clone [https://github.com/jeniblodev/rangolegal/tree/base-project]
+**Clone o repositório:**
 
-Entre na pasta do projeto:
-Bash
-cd seu-projeto
-Compile e rode a aplicação usando o Maven Wrapper:
+* `git clone https://github.com/jeniblodev/rangolegal.git`
 
-Bash
-./mvnw spring-boot:run
+**Entre na pasta do projeto:**
+
+* cd seu-projeto
+* Compile e rode a aplicação usando o Maven Wrapper: `./mvnw spring-boot:run`
+
 A aplicação estará disponível em http://localhost:8080.
 
 ## Instrução de uso
 
-Para utilizar a API: 
-Utilizar os endpoints:
-- http://localhost:8080/v1/users?name=
-Método GET para buscar usuário pelo nome
-- http://localhost:8080/v1/auth/login
-Método POST para fazer login
-- http://localhost:8080/v1/users
-Método POST para registrar novo usuário
-- http://localhost:8080/v1/users/2/data
-Método PATCH para atualizar dados cadastrais
-- http://localhost:8080/v1/users/1/password
-Método PATCH para atualizar senha
-- http://localhost:8080/v1/users/1/data
-Método PATCH para buscar dados do usuário por ID
-- http://localhost:8080/v1/users/1
-Método DELETE para deletar usuário
+**Para utilizar a API:**
+| Endpoint | Método | Descrição |
+| :--- | :---: | :--- |
+| /v1/users?name= | GET | Buscar usuário pelo nome através de Query Params (?name=) |
+| /v1/users/{id} | GET | Buscar dados do usuário por ID |
+| /v1/auth/login | POST | Validar credenciais e autorizar o acesso ao sistema |
+| /v1/users | POST | Registrar novo usuário |
+| /v1/users/{id}/data | PATCH | Atualizar dados cadastrais básicos (nome, login, endereço) |
+| /v1/users/{id}/password | PATCH | Atualizar senha |
+| /v1/users/{id} | DELETE | Deletar usuário |
 
-Para acessar ao banco mySql
-Bash
+**Para acessar ao banco mySql**
 docker exec -it db_tech_challenge mysql -u root -p
 a senha que está no docker compose
-após dê o comenado USE rangolegal; para acessar a tabela e o SELECT que precisa.
+após dê o comando `USE rangolegal;` para acessar a tabela e o SELECT que precisa.
 
 ## Licença
-## Permição de uso para fins educativos, não comercial
+Permissão de uso para fins educativos, não comercial
