@@ -64,7 +64,8 @@ public class UserController {
         return ResponseEntity.ok("Senha atualizada com sucesso");
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }
