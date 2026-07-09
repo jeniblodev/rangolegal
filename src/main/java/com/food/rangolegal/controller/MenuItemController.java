@@ -2,7 +2,6 @@ package com.food.rangolegal.controller;
 
 import com.food.rangolegal.dto.MenuItemRequestDTO;
 import com.food.rangolegal.model.MenuItem;
-import com.food.rangolegal.model.User;
 import com.food.rangolegal.repository.MenuItemRepository;
 import com.food.rangolegal.service.MenuItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +19,7 @@ import java.util.List;
 @Service
 public class MenuItemController {
     @Autowired
-    private MenuItRestaurantControllleremRepository repository;
+    private MenuItemRepository repository;
     private MenuItemService service;
 
     @Operation(summary = "Registrar novo item no cardápio")
@@ -29,7 +28,7 @@ public class MenuItemController {
             @ApiResponse(responseCode = "400", description = "Erro item já cadastrado")
     })
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody @Valid MenuItemRequestDTO menuItemRequestDTO) {
+    public ResponseEntity<MenuItem> create(@RequestBody @Valid MenuItemRequestDTO menuItemRequestDTO) {
         return ResponseEntity.status(201).body(service.save(menuItemRequestDTO));
     }
 
