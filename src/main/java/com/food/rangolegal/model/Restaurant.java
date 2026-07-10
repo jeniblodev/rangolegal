@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_restaurants")
+@Table(name = "restaurants")
 @Getter
 @Setter
 
@@ -18,8 +18,8 @@ public class Restaurant {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String address;
+    @Embedded
+    private Address address;
 
     @Column(name = "cuisine_type", nullable = false)
     private String cuisineType;
@@ -28,9 +28,9 @@ public class Restaurant {
     private String operatingHours;
 
     // Relacionamento com o Dono (Atribuindo um RestaurantOwner ao restaurante)
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private RestaurantOwner owner;
+    //@ManyToOne
+    //@JoinColumn(name = "owner_id", nullable = false)
+    //private RestaurantOwner owner;
 
     // Relacionamento com os itens do cardápio (Um restaurante tem muitos itens)
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)

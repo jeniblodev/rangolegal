@@ -31,6 +31,7 @@ public class UserController {
             @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Erro de validação ou e-mail duplicado")
     })
+
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         return ResponseEntity.status(201).body(userService.save(userRequestDTO));

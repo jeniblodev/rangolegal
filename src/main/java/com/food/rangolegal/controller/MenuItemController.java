@@ -2,25 +2,26 @@ package com.food.rangolegal.controller;
 
 import com.food.rangolegal.dto.MenuItemRequestDTO;
 import com.food.rangolegal.model.MenuItem;
-import com.food.rangolegal.repository.MenuItemRepository;
 import com.food.rangolegal.service.MenuItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Service
+@Tag(name = "MenuItem", description = "Controle de itens no menu do restaurante")
+@RestController
+@RequestMapping("/v1/menu_item")
 public class MenuItemController {
-    @Autowired
-    private MenuItemRepository repository;
-    private MenuItemService service;
+    private final MenuItemService service;
+
+    public MenuItemController(MenuItemService service) {
+        this.service = service;
+    }
 
     @Operation(summary = "Registrar novo item no cardápio")
     @ApiResponses(value = {
@@ -32,19 +33,20 @@ public class MenuItemController {
         return ResponseEntity.status(201).body(service.save(menuItemRequestDTO));
     }
 
-    public List<MenuItem> listAll() {
-        return repository.findAll();
+    @Operation(summary = "Prato/lance/comida pelo nome")
+    @ApiResponse(responseCode = "200", description = "Prato/lance/comida não encontrados")
+    @GetMapping
+    public ResponseEntity<List<MenuItem>> getByName(@RequestParam String name) {
+        return ResponseEntity.ok(service.findByName(name));
     }
 
-    public MenuItem save(MenuItem menuItem) {
-        return repository.save(menuItem);
-    }
-
-    public MenuItem getById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Item não encontrado"));
-    }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
+    @Operation(summary = "Atualizar Prato/lance/comida cadastrado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Prato/lance/comida cadastrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Prato/lance/comida não encontrado")
+    })
+    @PatchMapping("/{id}/data")
+    public ResponseEntity<MenuItem> updateData(@PathVariable Long id, @RequestBody @Valid MenuItemRequestDTO menuItemRequestDTO) {
+        return ResponseEntity.ok(service.updateData(id, menuItemRequestDTO));
     }
 }
