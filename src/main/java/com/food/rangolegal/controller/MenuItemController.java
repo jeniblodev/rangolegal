@@ -33,11 +33,21 @@ public class MenuItemController {
         return ResponseEntity.status(201).body(service.save(menuItemRequestDTO));
     }
 
-    @Operation(summary = "Buscar refeição pelo nome no cardápio")
-    @ApiResponse(responseCode = "200", description = "Refeição não encontrada")
+    @Operation(summary = "Listar refeições ou buscar pelo nome no cardápio")
+    @ApiResponse(responseCode = "200", description = "Lista de refeições encontrada")
     @GetMapping
-    public ResponseEntity<List<MenuItem>> getByName(@RequestParam String name) {
+    public ResponseEntity<List<MenuItem>> list(@RequestParam(required = false) String name) {
+        if (name == null || name.isBlank()) {
+            return ResponseEntity.ok(service.listarTodos());
+        }
         return ResponseEntity.ok(service.findByName(name));
+    }
+
+    @Operation(summary = "Buscar refeicao por ID no cardapio")
+    @ApiResponse(responseCode = "200", description = "Refeicao encontrada")
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuItem> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
     }
 
     @Operation(summary = "Atualizar refeição no Cardápio")
