@@ -78,7 +78,7 @@ public class UserService {
         user.setUserType(userType);
         return userRepository.save(user);
     }
-        @Transactional
+    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado com o ID: " + id);

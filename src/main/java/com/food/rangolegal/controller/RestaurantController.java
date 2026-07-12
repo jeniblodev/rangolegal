@@ -1,7 +1,7 @@
 package com.food.rangolegal.controller;
 
 import com.food.rangolegal.dto.RestaurantRequestDTO;
-import com.food.rangolegal.dto.UserUpdateDTO;
+import com.food.rangolegal.dto.RestaurantUpdateDTO;
 import com.food.rangolegal.model.Restaurant;
 import com.food.rangolegal.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,12 +34,16 @@ public class RestaurantController {
     })
 
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurante) {
-        return ResponseEntity.status(201).body(service.save(restaurante));
+    public ResponseEntity<Restaurant> create(@RequestBody @Valid RestaurantRequestDTO dto) {
+        return ResponseEntity.status(201).body(service.save(dto));
     }
 
     @Operation(summary = "Buscar restaurantes pelo nome")
-    @ApiResponse(responseCode = "200", description = "Lista de restaurantes encontrados")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Lista de restaurantes encontrados"),
+    @ApiResponse(responseCode = "404", description = "Restaurante não encontrado")
+    })
+
     @GetMapping
     public ResponseEntity<List<Restaurant>> getByName(@RequestParam String name) {
         return ResponseEntity.ok(service.findByName(name));
@@ -50,10 +54,12 @@ public class RestaurantController {
             @ApiResponse(responseCode = "200", description = "Dados atualizados com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
+
     @PatchMapping("/{id}/data")
-    public ResponseEntity<Restaurant> updateData(@PathVariable Long id, @RequestBody @Valid RestaurantRequestDTO restaurantUpadateDTO) {
-        @Valid UserUpdateDTO RestaurantRequestDTO = null;
-        return ResponseEntity.ok(service.updateData(id, RestaurantRequestDTO));
+    public ResponseEntity<Restaurant> updateData(
+            @PathVariable Long id,
+            @RequestBody @Valid RestaurantUpdateDTO restaurantUpdateDTO) {
+        return ResponseEntity.ok(service.updateData(id, restaurantUpdateDTO));
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.food.rangolegal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class Restaurant {
     private String name;
 
     @Embedded
-    private Address address;
+    public Address address;
 
     @Column(name = "cuisine_type", nullable = false)
     private String cuisineType;
@@ -32,4 +33,14 @@ public class Restaurant {
     @JsonManagedReference
     private List<MenuItem> menuItems;
 
+    @Column(name = "owner_id", nullable = false)
+    private Long ownerId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private RestaurantOwner owner;
+
+    public void setOwner(RestaurantOwner ownerCompleto) {
+    }
 }
