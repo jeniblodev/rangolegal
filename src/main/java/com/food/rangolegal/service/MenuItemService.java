@@ -6,9 +6,10 @@ import com.food.rangolegal.model.Restaurant;
 import com.food.rangolegal.repository.MenuItemRepository;
 import com.food.rangolegal.repository.RestaurantRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -41,6 +42,14 @@ public class MenuItemService {
         Restaurant restaurant = restaurantRepository.findById(item.restaurantId())
                 .orElseThrow(() -> new RuntimeException("Não é possível adicionar o item: Restaurante não encontrado"));
 
+        boolean nomeJaExiste = menuItemRepository.existsByNameAndRestaurantId(
+                item.name(),
+                item.restaurantId()
+        );
+
+        if (nomeJaExiste) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro: Este restaurante já possui um item com o nome '" + item.name() + "'.");
+        }
         MenuItem menuItem = new MenuItem();
         menuItem.setName(item.name());
         menuItem.setDescription(item.description());
@@ -55,6 +64,20 @@ public class MenuItemService {
     @Transactional
     public MenuItem updateData(Long id, MenuItemRequestDTO menuItemRequestDTO) {
         MenuItem itemExistente = getById(id);
+
+        Long restaurantId = (menuItemRequestDTO.restaurantId() != null)
+                ? menuItemRequestDTO.restaurantId()
+                : itemExistente.getRestaurant().getId();
+
+        boolean nomeJaExiste = menuItemRepository.existsByNameAndRestaurantIdAndIdNot(
+                menuItemRequestDTO.name(),
+                restaurantId,
+                id
+        );
+
+        if (nomeJaExiste) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro: Já existe outro item com este nome neste restaurante.");
+        }
 
         itemExistente.setName(menuItemRequestDTO.name());
         itemExistente.setDescription(menuItemRequestDTO.description());

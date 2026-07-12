@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "MenuItem", description = "Controle de itens no menu do restaurante")
+@Tag(name = "MenuItem", description = "Controle de itens do cardápio")
 @RestController
 @RequestMapping("/v1/menu_item")
 public class MenuItemController {
@@ -33,20 +33,26 @@ public class MenuItemController {
         return ResponseEntity.status(201).body(service.save(menuItemRequestDTO));
     }
 
-    @Operation(summary = "Prato/lance/comida pelo nome")
-    @ApiResponse(responseCode = "200", description = "Prato/lance/comida não encontrados")
+    @Operation(summary = "Buscar refeição pelo nome no cardápio")
+    @ApiResponse(responseCode = "200", description = "Refeição não encontrada")
     @GetMapping
     public ResponseEntity<List<MenuItem>> getByName(@RequestParam String name) {
         return ResponseEntity.ok(service.findByName(name));
     }
 
-    @Operation(summary = "Atualizar Prato/lance/comida cadastrado")
+    @Operation(summary = "Atualizar refeição no Cardápio")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Prato/lance/comida cadastrado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Prato/lance/comida não encontrado")
+            @ApiResponse(responseCode = "200", description = "Refeição cadastrada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Refeição não atualizada")
     })
     @PatchMapping("/{id}/data")
     public ResponseEntity<MenuItem> updateData(@PathVariable Long id, @RequestBody @Valid MenuItemRequestDTO menuItemRequestDTO) {
         return ResponseEntity.ok(service.updateData(id, menuItemRequestDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok("Refeição deletada com sucesso");
     }
 }
