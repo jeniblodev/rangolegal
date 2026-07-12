@@ -64,6 +64,13 @@ public class UserController {
         userService.updatePassword(id, passwordUpdateDTO);
         return ResponseEntity.ok("Senha atualizada com sucesso");
     }
+
+    @Operation(summary = "Associar tipo de usuario a usuario existente")
+    @PatchMapping("/{id}/user-type/{userTypeId}")
+    public ResponseEntity<User> updateUserType(@PathVariable Long id, @PathVariable Long userTypeId) {
+        return ResponseEntity.ok(userService.updateUserType(id, userTypeId));
+    }
+
     @DeleteMapping("/{id}")
 
     public ResponseEntity<String> delete(@PathVariable Long id) {
