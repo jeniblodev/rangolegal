@@ -1,7 +1,6 @@
 package com.food.rangolegal.controller;
 
 import com.food.rangolegal.dto.RestaurantRequestDTO;
-import com.food.rangolegal.dto.UserUpdateDTO;
 import com.food.rangolegal.model.Restaurant;
 import com.food.rangolegal.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/restaurant")
 public class RestaurantController {
 
-    @Autowired
-    private RestaurantService service;
+    private final RestaurantService service;
 
     public RestaurantController(RestaurantService service) {
         this.service = service;
@@ -34,15 +31,26 @@ public class RestaurantController {
     })
 
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurante) {
-        return ResponseEntity.status(201).body(service.save(restaurante));
+    public ResponseEntity<Restaurant> create(@RequestBody @Valid RestaurantRequestDTO dto) {
+        return ResponseEntity.status(201).body(service.save(dto));
     }
 
     @Operation(summary = "Buscar restaurantes pelo nome")
     @ApiResponse(responseCode = "200", description = "Lista de restaurantes encontrados")
     @GetMapping
-    public ResponseEntity<List<Restaurant>> getByName(@RequestParam String name) {
-        return ResponseEntity.ok(service.findByName(name));
+    public ResponseEntity<List<Restaurant>> getAll(@RequestParam(required = false) String name) {
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(service.findByName(name));
+        }
+
+        return ResponseEntity.ok(service.listAll());
+    }
+
+    @Operation(summary = "Buscar restaurante por ID")
+    @ApiResponse(responseCode = "200", description = "Restaurante encontrado")
+    @GetMapping("/{id}")
+    public ResponseEntity<Restaurant> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @Operation(summary = "Atualizar dados cadastrais")
@@ -52,8 +60,7 @@ public class RestaurantController {
     })
     @PatchMapping("/{id}/data")
     public ResponseEntity<Restaurant> updateData(@PathVariable Long id, @RequestBody @Valid RestaurantRequestDTO restaurantUpadateDTO) {
-        @Valid UserUpdateDTO RestaurantRequestDTO = null;
-        return ResponseEntity.ok(service.updateData(id, RestaurantRequestDTO));
+        return ResponseEntity.ok(service.updateData(id, restaurantUpadateDTO));
     }
 
     @DeleteMapping("/{id}")
