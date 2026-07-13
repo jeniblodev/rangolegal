@@ -27,6 +27,6 @@ public class Restaurant {
     private String operatingHours;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     private RestaurantOwner owner;
 }
