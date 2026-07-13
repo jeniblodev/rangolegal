@@ -6,7 +6,9 @@ import com.food.rangolegal.dto.UserUpdateDTO;
 import com.food.rangolegal.model.Client;
 import com.food.rangolegal.model.RestaurantOwner;
 import com.food.rangolegal.model.User;
+import com.food.rangolegal.model.UserType;
 import com.food.rangolegal.repository.UserRepository;
+import com.food.rangolegal.repository.UserTypeRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,12 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserTypeRepository userTypeRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserTypeRepository userTypeRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userTypeRepository = userTypeRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -65,7 +69,16 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(passwordUpdateDTO.newPassword()));
         userRepository.save(user);
     }
-        @Transactional
+
+    public User updateUserType(Long id, Long userTypeId) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario nao encontrado com o ID: " + id));
+        UserType userType = userTypeRepository.findById(userTypeId)
+                .orElseThrow(() -> new RuntimeException("Tipo de usuario nao encontrado com o ID: " + userTypeId));
+
+        user.setUserType(userType);
+        return userRepository.save(user);
+    }
+    @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado com o ID: " + id);

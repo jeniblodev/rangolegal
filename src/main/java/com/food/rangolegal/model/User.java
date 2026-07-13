@@ -28,6 +28,10 @@ public abstract class User {
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_type_id")
+    private UserType userType;
+
     @Embedded
     private Address address;
 
