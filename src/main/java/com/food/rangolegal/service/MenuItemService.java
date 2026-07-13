@@ -93,23 +93,4 @@ public class MenuItemService {
 
         return menuItemRepository.save(itemExistente);
     }
-
-    @Transactional
-    public MenuItem atualizar(Long id, MenuItem itemAtualizado) {
-        MenuItem itemExistente = getById(id);
-
-        itemExistente.setName(itemAtualizado.getName());
-        itemExistente.setDescription(itemAtualizado.getDescription());
-        itemExistente.setPrice(itemAtualizado.getPrice());
-        itemExistente.setDineInOnly(itemAtualizado.isDineInOnly());
-        itemExistente.setPhotoPath(itemAtualizado.getPhotoPath());
-
-        return menuItemRepository.save(itemExistente);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        MenuItem item = getById(id);
-        menuItemRepository.delete(item);
-    }
 }
