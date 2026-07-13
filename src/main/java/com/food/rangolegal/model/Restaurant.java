@@ -28,5 +28,5 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    private RestaurantOwner owner;
+    private User owner;
 }

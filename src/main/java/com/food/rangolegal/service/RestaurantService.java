@@ -2,7 +2,6 @@ package com.food.rangolegal.service;
 
 import com.food.rangolegal.dto.RestaurantRequestDTO;
 import com.food.rangolegal.model.Restaurant;
-import com.food.rangolegal.model.RestaurantOwner;
 import com.food.rangolegal.model.User;
 import com.food.rangolegal.repository.RestaurantRepository;
 import com.food.rangolegal.repository.UserRepository;
@@ -53,7 +52,7 @@ public class RestaurantService {
     }
 
     private void updateRestaurantData(Restaurant restaurant, RestaurantRequestDTO dto) {
-        RestaurantOwner owner = findRestaurantOwner(dto.ownerId());
+        User owner = findRestaurantOwner(dto.ownerId());
 
         restaurant.setName(dto.name());
         restaurant.setAddress(dto.address());
@@ -62,14 +61,17 @@ public class RestaurantService {
         restaurant.setOwner(owner);
     }
 
-    private RestaurantOwner findRestaurantOwner(Long ownerId) {
+    private User findRestaurantOwner(Long ownerId) {
         User user = userRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Dono do restaurante nao encontrado com o ID: " + ownerId));
 
-        if (!(user instanceof RestaurantOwner owner)) {
-            throw new RuntimeException("Usuario informado nao e dono de restaurante");
+        String userTypeName = user.getUserType() != null ? user.getUserType().getName() : null;
+
+        if (!"Dono de Restaurante".equalsIgnoreCase(userTypeName)
+                && !"RESTAURANT_OWNER".equalsIgnoreCase(userTypeName)) {
+            throw new RuntimeException("Usuario informado nao possui tipo Dono de Restaurante");
         }
 
-        return owner;
+        return user;
     }
 }
