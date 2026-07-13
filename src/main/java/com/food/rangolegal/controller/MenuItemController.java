@@ -63,6 +63,6 @@ public class MenuItemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.ok("Refeição deletada com sucesso");
+        return ResponseEntity.ok("Item do menu deletado com sucesso");
     }
 }

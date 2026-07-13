@@ -93,4 +93,12 @@ public class MenuItemService {
 
         return menuItemRepository.save(itemExistente);
     }
+
+    public void delete(Long id) {
+        if (!menuItemRepository.existsById(id)) {
+            throw new RuntimeException("Item do menu nao encontrado com o ID: " + id);
+        }
+
+        menuItemRepository.deleteById(id);
+    }
 }
