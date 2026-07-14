@@ -47,6 +47,20 @@ A aplicação estará disponível em http://localhost:8080.
 | /v1/users/{id}/data | PATCH | Atualizar dados cadastrais básicos (nome, login, endereço) |
 | /v1/users/{id}/password | PATCH | Atualizar senha |
 | /v1/users/{id} | DELETE | Deletar usuário |
+| /V1/user-types/{id} | GET | Buscar tipo de usuário por ID
+| /V1/user-types/{id} | PUT | Atualizar tipo de usuário por ID
+| /V1/user-types/{id} | DELETE | Remover tipo de usuário por ID
+| /V1/user-types | GET | Listar tipos de usuário
+| /V1/user-types | POST | Registrar novo tipo de usuário
+| /V1/menu_item | GET | Registrar nova refeição no cardário
+| /V1/menu_item | POST | Registrar refeição no cardário
+| /V1/menu_item | PATCH | Atualizar refeição pelo nome no cardário
+| /V1/menu_item | DELETE | Deletar refeição no cardário
+| /V1/restaurant| GET | Buscar restaurantes pelo nome
+| /V1/restaurant | POST | Registrar novo restaurante
+| /V1/restaurant/{id}/data | PATCH | Atualizar dados do restaurantes pelo ID
+| /V1/restaurant/{id} | GET | Remover restaurantes pelo ID
+| /V1/restaurant/{id} | DELETE | Remover restaurantes pelo ID
 
 **Para acessar ao banco mySql**
 docker exec -it db_tech_challenge mysql -u root -p
