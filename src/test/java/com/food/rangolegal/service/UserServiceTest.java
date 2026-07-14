@@ -12,7 +12,11 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class UserServiceTest {
@@ -22,13 +26,13 @@ class UserServiceTest {
     private final UserService service = new UserService(userRepository, userTypeRepository, new BCryptPasswordEncoder());
 
     @Test
-    void updateUserTypeAssociatesExistingUserAndType() {
+    void updateUserType_whenUserAndTypeExist_associatesAndReturnsUser() {
         User user = new Client();
         user.setId(1L);
 
         UserType userType = new UserType();
         userType.setId(2L);
-        userType.setName("Cliente");
+        userType.setName("Dono de Restaurante");
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(userTypeRepository.findById(2L)).thenReturn(Optional.of(userType));
@@ -37,24 +41,27 @@ class UserServiceTest {
         User result = service.updateUserType(1L, 2L);
 
         assertEquals(2L, result.getUserType().getId());
-        assertEquals("Cliente", result.getUserType().getName());
+        assertEquals("Dono de Restaurante", result.getUserType().getName());
     }
 
     @Test
-    void updateUserTypeThrowsWhenUserDoesNotExist() {
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+    void updateUserType_whenUserDoesNotExist_throwsRuntimeException() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> service.updateUserType(1L, 2L));
+        assertThrows(RuntimeException.class, () -> service.updateUserType(99L, 2L));
+        verifyNoInteractions(userTypeRepository);
+        verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
-    void updateUserTypeThrowsWhenTypeDoesNotExist() {
+    void updateUserType_whenUserTypeDoesNotExist_throwsRuntimeException() {
         User user = new Client();
         user.setId(1L);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(userTypeRepository.findById(2L)).thenReturn(Optional.empty());
+        when(userTypeRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> service.updateUserType(1L, 2L));
+        assertThrows(RuntimeException.class, () -> service.updateUserType(1L, 99L));
+        verify(userRepository, never()).save(any(User.class));
     }
 }
