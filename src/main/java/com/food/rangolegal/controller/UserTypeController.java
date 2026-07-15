@@ -1,8 +1,8 @@
 package com.food.rangolegal.controller;
 
-import com.food.rangolegal.dto.UserTypeRequestDTO;
-import com.food.rangolegal.model.UserType;
-import com.food.rangolegal.service.UserTypeService;
+import com.food.rangolegal.application.dto.UserTypeRequestDTO;
+import com.food.rangolegal.domain.model.UserType;
+import com.food.rangolegal.application.service.UserTypeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

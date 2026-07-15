@@ -1,10 +1,10 @@
 package com.food.rangolegal.controller;
 
-import com.food.rangolegal.dto.PasswordUpdateDTO;
-import com.food.rangolegal.dto.UserRequestDTO;
-import com.food.rangolegal.dto.UserUpdateDTO;
-import com.food.rangolegal.model.User;
-import com.food.rangolegal.service.UserService;
+import com.food.rangolegal.application.dto.PasswordUpdateDTO;
+import com.food.rangolegal.application.dto.UserRequestDTO;
+import com.food.rangolegal.application.dto.UserUpdateDTO;
+import com.food.rangolegal.domain.model.User;
+import com.food.rangolegal.application.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

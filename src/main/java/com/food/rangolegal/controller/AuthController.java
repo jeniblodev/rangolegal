@@ -1,7 +1,7 @@
 package com.food.rangolegal.controller;
 
-import com.food.rangolegal.dto.LoginRequestDTO;
-import com.food.rangolegal.service.AuthService;
+import com.food.rangolegal.application.dto.LoginRequestDTO;
+import com.food.rangolegal.application.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

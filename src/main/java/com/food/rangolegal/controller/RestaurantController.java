@@ -1,8 +1,8 @@
 package com.food.rangolegal.controller;
 
-import com.food.rangolegal.dto.RestaurantRequestDTO;
-import com.food.rangolegal.model.Restaurant;
-import com.food.rangolegal.service.RestaurantService;
+import com.food.rangolegal.application.dto.RestaurantRequestDTO;
+import com.food.rangolegal.domain.model.Restaurant;
+import com.food.rangolegal.application.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
