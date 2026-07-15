@@ -7,16 +7,34 @@
   },
   "item": [
     {
-      "name": "Login",
+      "name": "01 - UserType",
       "item": [
         {
-          "name": "Login",
+          "name": "Criar UserType - Dono de Restaurante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"userTypeId\", json.id);"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"login\": \"admin\",\r\n  \"password\": \"$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzVymObV4H6syv7z969Zwe7S76\"\r\n}",
+              "raw": "{\n  \"name\": \"Dono de Restaurante\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -24,43 +42,13 @@
               }
             },
             "url": {
-              "raw": "{{local}}/v1/auth/login",
+              "raw": "{{baseUrl}}/v1/user-types",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
-                "auth",
-                "login"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Atualizar senha",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"currentPassword\": \"654321\",\r\n    \"newPassword\": \"123456\",\r\n    \"confirmNewPassword\": \"123456\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{local}}/v1/users/4/password",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "users",
-                "4",
-                "password"
+                "user-types"
               ]
             }
           },
@@ -69,42 +57,34 @@
       ]
     },
     {
-      "name": "Usuário",
+      "name": "02 - Usuario",
       "item": [
         {
-          "name": "Registrar novo usuário - Dono Restaurante",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"João Proprietário\",\r\n    \"email\": \"joao@restaurante.com\",\r\n    \"login\": \"joao_owner\",\r\n    \"password\": \"sua_senha_aqui\",\r\n    \"userType\": \"RESTAURANT_OWNER\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"city\": \"São Paulo\",\r\n        \"zipCode\": \"01234-567\"\r\n    }\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
+          "name": "Criar usuario dono",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"userId\", json.id);"
+                ]
               }
-            },
-            "url": {
-              "raw": "{{local}}v1/users",
-              "host": [
-                "{{local}}v1"
-              ],
-              "path": [
-                "users"
-              ]
             }
-          },
-          "response": []
-        },
-        {
-          "name": "Registrar novo usuário - Cliente",
+          ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Maria Cliente\",\r\n    \"email\": \"joao@restaurante.com\",\r\n    \"login\": \"maria.teste\",\r\n    \"password\": \"123456\",\r\n    \"userType\": \"CLIENT\",\r\n    \"address\": {\r\n        \"street\": \"Rua dos Cactos\",\r\n        \"number\": \"123\",\r\n        \"city\": \"Curitiba\",\r\n        \"zipCode\": \"80030-180\"\r\n    }\r\n}",
+              "raw": "{\n  \"name\": \"Usuário Dono\",\n  \"email\": \"dono{{$timestamp}}@example.com\",\n  \"login\": \"dono{{$timestamp}}\",\n  \"password\": \"senha123\",\n  \"address\": {\n    \"street\": \"Rua A\",\n    \"number\": \"100\",\n    \"city\": \"Sao Paulo\",\n    \"zipCode\": \"01000-000\"\n  },\n  \"userType\": \"RESTAURANT_OWNER\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -112,9 +92,9 @@
               }
             },
             "url": {
-              "raw": "{{local}}/v1/users",
+              "raw": "{{baseUrl}}/v1/users",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
@@ -125,81 +105,21 @@
           "response": []
         },
         {
-          "name": "Buscar usuários pelo nome",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{local}}/v1/users?name=Maria",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "users"
-              ],
-              "query": [
-                {
-                  "key": "name",
-                  "value": "Maria"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Atualizar dados cadastrais do usuário",
+          "name": "Associar UserType ao usuario",
           "request": {
             "method": "PATCH",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Nome Atualizado\",\r\n    \"address\": {\r\n        \"street\": \"Rua das Flores\",\r\n        \"number\": \"123\",\r\n        \"city\": \"São Paulo\",\r\n        \"zipCode\": \"01234-567\"\r\n    }\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "{{local}}/v1/users/2/data",
+              "raw": "{{baseUrl}}/v1/users/{{userId}}/user-type/{{userTypeId}}",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
                 "users",
-                "2",
-                "data"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Deletar usuário",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{local}}/v1/users/1",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "users",
-                "1"
+                "{{userId}}",
+                "user-type",
+                "{{userTypeId}}"
               ]
             }
           },
@@ -208,16 +128,34 @@
       ]
     },
     {
-      "name": "Restaurante",
+      "name": "03 - Restaurante",
       "item": [
         {
-          "name": "Criar Restaurante",
+          "name": "Criar restaurante",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"restaurantId\", json.id);"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"name\": \"Sergipe\",\r\n  \"address\": {\r\n    \"street\": \"Rua Bahia\",\r\n    \"number\": \"1800\",\r\n    \"city\": \"São Paulo\",\r\n    \"zipCode\": \"SP\"\r\n  },\r\n  \"cuisineType\": \"Baiana\",\r\n  \"operatingHours\": \"Terça a Domingo, das 18h às 23h\",\r\n  \"ownerId\": 5\r\n}",
+              "raw": "{\n  \"name\": \"Rango Legal\",\n  \"address\": {\n    \"street\": \"Rua A\",\n    \"number\": \"100\",\n    \"city\": \"Sao Paulo\",\n    \"zipCode\": \"01000-000\"\n  },\n  \"cuisineType\": \"Brasileira\",\n  \"operatingHours\": \"10h as 22h\",\n  \"ownerId\": {{userId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -225,13 +163,50 @@
               }
             },
             "url": {
-              "raw": "{{local}}/v1/restaurant",
+              "raw": "{{baseUrl}}/v1/restaurant",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
                 "restaurant"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar restaurantes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/restaurant",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "restaurant"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar restaurante pelo ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/restaurant/{{restaurantId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "restaurant",
+                "{{restaurantId}}"
               ]
             }
           },
@@ -243,9 +218,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{local}}/v1/restaurant?name=Oriente",
+              "raw": "{{baseUrl}}/v1/restaurant?name=Rango",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
@@ -254,7 +229,7 @@
               "query": [
                 {
                   "key": "name",
-                  "value": "Oriente"
+                  "value": "Rango"
                 }
               ]
             }
@@ -262,13 +237,19 @@
           "response": []
         },
         {
-          "name": "Atualizar dados cadastrais do Restaurante",
+          "name": "Atualizar dados cadastrais do restaurante",
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"name\": \"Nipo Food\",\r\n  \"address\": {\r\n    \"street\": \"Rua Augusta\",\r\n    \"number\": \"123\",\r\n    \"city\": \"São Paulo\",\r\n    \"zipCode\": \"01310-130\"\r\n  },\r\n  \"cuisineType\": \"Japonesa\",\r\n  \"operatingHours\": \"Terça a Domingo, das 18h às 23h\",\r\n  \"ownerId\": 5\r\n}",
+              "raw": "{\n  \"name\": \"Rango Legal Atualizado\",\n  \"address\": {\n    \"street\": \"Rua A\",\n    \"number\": \"100\",\n    \"city\": \"Sao Paulo\",\n    \"zipCode\": \"01000-000\"\n  },\n  \"cuisineType\": \"Brasileira\",\n  \"operatingHours\": \"11h as 23h\",\n  \"ownerId\": {{userId}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -276,15 +257,427 @@
               }
             },
             "url": {
-              "raw": "{{local}}/v1/restaurant/5/data",
+              "raw": "{{baseUrl}}/v1/restaurant/{{restaurantId}}/data",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
                 "restaurant",
-                "5",
+                "{{restaurantId}}",
                 "data"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Cardapio/Menu",
+      "item": [
+        {
+          "name": "Criar item de cardapio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set(\"menuItemId\", json.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Feijoada\",\n  \"description\": \"Feijoada completa\",\n  \"price\": 29.90,\n  \"dineInOnly\": true,\n  \"photoPath\": \"/feijoada.jpg\",\n  \"restaurantId\": {{restaurantId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/menu_item",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "menu_item"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar itens de cardapio",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/menu_item",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "menu_item"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar item de cardapio pelo ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/menu_item/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "menu_item",
+                "{{menuItemId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar item de cardapio pelo nome",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/menu_item?name=Feij",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "menu_item"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Feij"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar item de cardapio",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Feijoada Especial\",\n  \"description\": \"Feijoada completa especial\",\n  \"price\": 34.90,\n  \"dineInOnly\": true,\n  \"photoPath\": \"/feijoada-especial.jpg\",\n  \"restaurantId\": {{restaurantId}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/menu_item/{{menuItemId}}/data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "menu_item",
+                "{{menuItemId}}",
+                "data"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - UserType consultas e manutencao",
+      "item": [
+        {
+          "name": "Listar UserTypes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/user-types",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "user-types"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar UserType pelo ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/user-types/{{userTypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "user-types",
+                "{{userTypeId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar UserType para RESTAURANT_OWNER",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"RESTAURANT_OWNER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/user-types/{{userTypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "user-types",
+                "{{userTypeId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "90 - Login e usuarios auxiliares",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"admin\",\n  \"password\": \"$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzVymObV4H6syv7z969Zwe7S76\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar usuarios pelo nome",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/users?name=Usu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Usu"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar dados cadastrais do usuario",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuario Dono Atualizado\",\n  \"address\": {\n    \"street\": \"Rua A\",\n    \"number\": \"100\",\n    \"city\": \"Sao Paulo\",\n    \"zipCode\": \"01000-000\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/{{userId}}/data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{userId}}",
+                "data"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar senha do usuario",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"senha123\",\n  \"newPassword\": \"senha1234\",\n  \"confirmNewPassword\": \"senha1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/users/{{userId}}/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users",
+                "{{userId}}",
+                "password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar usuario cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria Cliente\",\n  \"email\": \"cliente{{$timestamp}}@example.com\",\n  \"login\": \"cliente{{$timestamp}}\",\n  \"password\": \"123456\",\n  \"address\": {\n    \"street\": \"Rua dos Cactos\",\n    \"number\": \"123\",\n    \"city\": \"Curitiba\",\n    \"zipCode\": \"80030-180\"\n  },\n  \"userType\": \"CLIENT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/v1/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "99 - Limpeza",
+      "item": [
+        {
+          "name": "Deletar item de cardapio",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v1/menu_item/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v1",
+                "menu_item",
+                "{{menuItemId}}"
               ]
             }
           },
@@ -295,284 +688,53 @@
           "request": {
             "method": "DELETE",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "{{local}}/v1/restaurant/1",
+              "raw": "{{baseUrl}}/v1/restaurant/{{restaurantId}}",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
                 "restaurant",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Cardápio/Menu",
-      "item": [
-        {
-          "name": "Registrar novo item no cardápio/menu",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"name\": \"Lasanha\",\r\n  \"description\": \"Lasanha bolonhesa com molho bechamel\",\r\n  \"price\": 59.90,\r\n  \"dineInOnly\": false,\r\n  \"photoPath\": \"/images/products/lasanhabolonhesa.jpg\",\r\n  \"restaurantId\": 3\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{local}}/v1/menu_item",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "menu_item"
+                "{{restaurantId}}"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Buscar refeição pelo ID",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{local}}/v1/menu_item/1",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "menu_item",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar Refeições no cardápio",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{local}}/v1/menu_item",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "menu_item"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Atualizar item no menu/cardápio",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"name\": \"Lasanha de quatro queijos\",\r\n  \"description\": \"Lasanha de quatro queijos\",\r\n  \"price\": 65.90,\r\n  \"dineInOnly\": false,\r\n  \"photoPath\": \"/images/products/lasanha4queijos.jpg\",\r\n  \"restaurantId\": 3\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{local}}/v1/menu_item/2/data",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "menu_item",
-                "2",
-                "data"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Deletar item Menu",
+          "name": "Deletar usuario",
           "request": {
             "method": "DELETE",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "{{local}}/v1/menu_item/3",
+              "raw": "{{baseUrl}}/v1/users/{{userId}}",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
-                "menu_item",
-                "3"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Tipo de usuário",
-      "item": [
-        {
-          "name": "Criar Tipo de usuário",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"name\": \"Dono de Restaurante\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{local}}/v1/user-types",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "user-types"
+                "users",
+                "{{userId}}"
               ]
             }
           },
           "response": []
         },
         {
-          "name": "Buscar tipo de usuário pelo ID",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{local}}/v1/user-types/5",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "user-types",
-                "5"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar tipos de usuários",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{local}}/v1/user-types",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "user-types"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Atualizar tipo de usuário",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"name\": \"Cliente\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{local}}/v1/user-types/5",
-              "host": [
-                "{{local}}"
-              ],
-              "path": [
-                "v1",
-                "user-types",
-                "5"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Deletar tipo usuário",
+          "name": "Deletar UserType",
           "request": {
             "method": "DELETE",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "{{local}}/v1/user-types/3",
+              "raw": "{{baseUrl}}/v1/user-types/{{userTypeId}}",
               "host": [
-                "{{local}}"
+                "{{baseUrl}}"
               ],
               "path": [
                 "v1",
                 "user-types",
-                "3"
+                "{{userTypeId}}"
               ]
             }
           },
@@ -607,8 +769,29 @@
   ],
   "variable": [
     {
-      "key": "local",
-      "value": ""
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "userTypeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "restaurantId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "menuItemId",
+      "value": "",
+      "type": "string"
     }
   ]
 }
